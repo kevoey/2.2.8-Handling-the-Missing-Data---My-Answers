@@ -1,0 +1,585 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "eae8447d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#re-import the data\n",
+    "\n",
+    "import pandas as pd\n",
+    "movies = pd.read_excel('movies.xlsx')\n",
+    "ott = pd.read_csv('ott.csv')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bebb1090",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "movies"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a301ac81",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ott"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b7ec1747",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#calculate the missing sum of ages in the data\n",
+    "\n",
+    "movies['Age'].isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1a69186a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# change the 'NaN' values in the Age column to 'Others'\n",
+    "\n",
+    "#Prompt\n",
+    "#Specify the DataFrame and column name, for example, movies_df['Age'].\n",
+    "#Indicate that you want to change the movies_df['Age'] missing values .isna() to a set value.\n",
+    "#Specify the set value as  ='Others'.\n",
+    "#Replace the missing values in the following columns also with Others: Directors, Genres, Country, and Language.\n",
+    "\n",
+    "movies['Age'][movies['Age'].isna()] = 'Others'\n",
+    "\n",
+    "#check if 9390 results are still there\n",
+    "movies['Age'].isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e0a1fa81",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Replace the missing values in the following columns also with Others: \n",
+    "\n",
+    "#Directors\n",
+    "movies['Directors'].isnull().sum()\n",
+    "\n",
+    "# 726 missing values detected\n",
+    "\n",
+    "#change the value to 'others'\n",
+    "movies['Directors'][movies['Directors'].isna()] = 'Others'\n",
+    "\n",
+    "#check total missing values again\n",
+    "movies['Directors'].isnull().sum()\n",
+    "\n",
+    "#total 0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7587e895",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Genres\n",
+    "movies['Genres'].isnull().sum()\n",
+    "\n",
+    "#275 missing values detected\n",
+    "\n",
+    "# change missing values to 'Others'\n",
+    "movies['Genres'][movies['Genres'].isna()] = 'Others'\n",
+    "\n",
+    "# check the no of missing values again\n",
+    "movies['Genres'].isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "03fbda17",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Country\n",
+    "movies['Country'].isnull().sum()\n",
+    "\n",
+    "#435 missing values detected\n",
+    "\n",
+    "#change the missing values to 'Others'\n",
+    "movies['Country'][movies['Country'].isna()] = 'Others'\n",
+    "\n",
+    "#recheck no of missing values\n",
+    "movies['Country'].isnull().sum()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b891de72",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Language.\n",
+    "movies['Language'].isnull().sum()\n",
+    "\n",
+    "#599 missing values detected\n",
+    "\n",
+    "# change all missing values to Others\n",
+    "movies['Language'][movies['Language'].isna()] = 'Others'\n",
+    "\n",
+    "#check if the numbers are still missing\n",
+    "movies['Language'].isnull().sum()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "28cd75a4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Advanced problem\n",
+    "\n",
+    "#Convert the Rotten Tomatoes data type from object to integer if necessary. \n",
+    "#(Note: When numeric columns are displayed as object data you have to change the data type to integer \n",
+    "#before you can perform aggregate functions). "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7d01ce3e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Option 1 \n",
+    "\n",
+    "# There are two options to convert an object to integer.\n",
+    "# 1) Pandas Series\n",
+    "# Determine the data type first.\n",
+    "print(movies_df.dtypes)\n",
+    "\n",
+    "# Change Rotten Tomatoes from object to integer.\n",
+    "movies_df['Rotten Tomatoes'] = movies_df['Rotten Tomatoes'].astype(object).astype(int)\n",
+    "\n",
+    "print(movies_df.dtypes)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "861c5768",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Option 2\n",
+    "\n",
+    "# 2) Lambda function (you will learn more about lambda functions in week 3).\n",
+    "# Import numpy for the lambda function to work.\n",
+    "import numpy as np\n",
+    "\n",
+    "movies_df['Rotten Tomatoes'] = movies_df['Rotten Tomatoes'].apply(lambda x: int(x[:-1]) if x is not np.nan else x)\n",
+    "\n",
+    "print(movies_df.dtypes)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "35b7fbab",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Using Option 2\n",
+    "\n",
+    "import numpy as np\n",
+    "\n",
+    "#Original data type\n",
+    "print(movies.dtypes)\n",
+    "\n",
+    "#Rotten tomaotes dta type is float64\n",
+    "\n",
+    "#Change data type from obj to integer\n",
+    "movies['Rotten Tomatoes'] = movies['Rotten Tomatoes'].apply(lambda x: int(x[:-1]) if x is not np. nan else x)\n",
+    "\n",
+    "#Check data type again\n",
+    "print(movies.dtypes)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9034a51e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Identify missing values for the IMDb and Rotten Tomatoes rating columns.\n",
+    "#Replace the null values for both the columns with mean using inplace=True.\n",
+    "#Check the data to see if there are any more null values identified in the DataFrames.\n",
+    "\n",
+    "movies['IMDb'].isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "747955a4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "movies['Rotten Tomatoes'].isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d5fc4915",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Replace the null values for IMDb with mean using inplace=True.\n",
+    "\n",
+    "movies['IMDb'][movies['IMDb'].isna()] = 'Others'\n",
+    "\n",
+    "#Check values again\n",
+    "movies['IMDb'].isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e7307809",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Replace the null values for Rotten Tomatoes with mean using inplace=True.\n",
+    "movies['Rotten Tomatoes'][movies['Rotten Tomatoes'].isna()] = 'Others'\n",
+    "\n",
+    "#Check values again\n",
+    "movies['Rotten Tomatoes'].isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "605445fc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#Check the data to see if there are any more null values identified in the DataFrames.\n",
+    "\n",
+    "list(movies)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "18d60068",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Title                  0\n",
+       "Year                   0\n",
+       "Age                 9390\n",
+       "IMDb                 571\n",
+       "Rotten Tomatoes    11586\n",
+       "Directors            726\n",
+       "Genres               275\n",
+       "Country              435\n",
+       "Language             599\n",
+       "Runtime              592\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "movies.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "9a782392",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "ID             0\n",
+       "Netflix        0\n",
+       "Hulu           0\n",
+       "Prime Video    0\n",
+       "Disney+        0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ott.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1492df3e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5c492f45",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a9703a24",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "eb0ba5e3",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1026efb3",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6ae3fe3d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0d981981",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e7fae608",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6321159c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1a547c11",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d1733f7a",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "091c228e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9048bb84",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bfe55ac0",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4ffd0161",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c87ef692",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7ee9647b",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c89ecf55",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3ae2ce2d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "43e8cd2f",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "21aa3578",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4ae1bba1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e38051a1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "604584db",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b7ed8ac5",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "67aab5ca",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "762deb9e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
